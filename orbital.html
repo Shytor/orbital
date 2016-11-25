@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trajectory Calculator</title>
+  <style>
+  	body {
+        margin:0px;
+        padding:0px;
+      }
+  	#screen{
+  		position:absolute;
+  		left:0;
+  		top:0;
+  		margin:0px;
+  		padding:0px;
+  	}
+  	#backdrop{
+  		position:absolute;
+  		left:0;
+  		top:0;
+  		margin:0px;
+  		padding:0px;
+  	}
+  	#input{
+  		position:absolute;
+  		top:540px;
+  		margin:8px;
+  	}
+
+  </style>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+  	//Copyright 2016 Trevor Gast: codeandcompose.com
+		//Orbital Mechanics 2D Playground (25 November 2016)
+		//GNU General Public License
+		//This program is free software: you can redistribute it and/or modify
+    	//it under the terms of the GNU General Public License as published by
+		//the Free Software Foundation, either version 3 of the License, or
+		//(at your option) any later version.
+		//
+		//This program is distributed in the hope that it will be useful,
+		//but WITHOUT ANY WARRANTY; without even the implied warranty of
+		//MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+		//GNU General Public License for more details.
+
+		//You should have received a copy of the GNU General Public License
+		//along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  	
+  	//init
+  	function init(){
+  		var canvas = document.getElementById("screen");
+		ctx = canvas.getContext('2d');
+		canvas.height = 540;
+		canvas.width = 1000;
+		var canvasb = document.getElementById("backdrop");
+		ctxb = canvasb.getContext('2d');
+		canvasb.height = 540;
+		canvasb.width = 1000;
+		ctx.textAlign ="center";
+		ctx.textBaseline = "middle";
+		ctx.font = "16px Arial";
+		ctxb.textAlign = "center";
+		ctxb.textBaseline = "middle";
+		ctxb.font = "16px Arial";
+		offsetx = canvas.offsetLeft;
+		offsety = canvas.offsetTop;
+		//document.getElementById("screen").onmousedown = canvasClick;
+		//document.getElementById("screen").onmouseup = canvasUnclick;
+		//document.getElementById("screen").onmousemove = canvasMove;
+		
+  	}
+	//window.onload = function(){
+		//init();
+	//}
+	
+	///////////////////////
+	///////ANIMATING///////
+	///////////////////////
+	window.requestAnimFrame = (function(){
+		return window.requestAnimationFrame || window.webkitRequesAnimationFrame || window.mozRequesAnimationFrame || window.oRequesAnimationFrame || window.msRequesAnimationFrame ||
+		function (callback){
+			window.setTimeout(callback, 1000/60);
+		};
+	})();
+	
+	function animate(t){
+		if (t <= landingT && animating) requestAnimFrame(function(){animate(1/60 + t)});
+		else animating = false;
+		drawTrajectory(100*t/landingT);
+	}
+	
+  </script>
+</head>
+<body>
+	<canvas id="backdrop" width="1000" height="540">Your browser does not support HTML 5... loser!</canvas>
+	<canvas id="screen" width="1000" height="540"></canvas>
+	<input type="range" orient="vertical" id="scale-slider" value="-64" min="-64" max="64"><br/>
+	<div id="input">
+	<button id="launch">LAUNCH!</button>
+			<input type="range" id="time-slider" value="1" min="0" max="100"><br/>
+			Velocity: 
+			<input type="number" id="velocity" value="10"> m/s<br/>
+			Angle: 
+			<input type="range" id="angle" value="45" min="0" max="90"><br/>
+			Gravity:
+			<input type="number" id="gravity" value="9.80665" min="0">m/s&#178;<br/>
+	<br/>Copyright &copy; 2016 - <a href="http://www.codeandcompose.com">codeandcompose.com</a>
+	<br/><a href="https://github.com/Shytor/trajectory">Find the repository on GitHub</a>
+	</div>
+</body>
+</html>
